@@ -3,6 +3,9 @@ import colors from 'colors'
 import morgan from 'morgan'
 import { db } from './config/db'
 import router from './routes/PresupuestosRoutes'
+import authrouter from './routes/authRouter'
+
+
 async function connectDB(){
     try{
         await db.authenticate()
@@ -21,5 +24,7 @@ app.use(morgan('dev'))
 app.use(express.json())
 
 app.use('/api/presupuesto',router)
+
+app.use('/api/auth',authrouter)
 
 export default app
