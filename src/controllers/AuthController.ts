@@ -33,4 +33,25 @@ export class AuthControlller {
             res.status(404).json({error:'Hubo Un eror'})
          } 
     }
+
+
+    static confirmAccount = async (req: Request, res: Response):Promise<void> => {
+        const {token} = req.body
+        const user = await Usuarios.findOne({
+            where:{
+                token
+            }
+        })
+        if(!user){
+            res.status(409).json({ error: 'Token No valido' });
+            return;
+        }
+
+        user.confirmed = true
+        user.token=""
+        await user.save()
+        res.status(201).json("Cuenta Confirmada correctamente")
+
+        return
+    }
 }

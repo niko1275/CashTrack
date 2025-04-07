@@ -11,5 +11,5 @@ router.post('/create-account',
     body('email').isEmail().withMessage('Campo email no es valido')
     ,AuthControlller.createaccount)
 
-
+router.post('/confirm-account', body('token').notEmpty().isLength({min:6}).withMessage('Campo token no puede ir vacio'),AuthControlller.confirmAccount)
 export default router

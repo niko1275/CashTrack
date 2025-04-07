@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import { db } from './config/db'
 import router from './routes/PresupuestosRoutes'
 import authrouter from './routes/authRouter'
+import { limiter } from './config/limiter'
 
 
 async function connectDB(){
@@ -18,6 +19,8 @@ async function connectDB(){
 
 connectDB()
 const app = express()
+
+app.use(limiter)
 
 app.use(morgan('dev'))
 
