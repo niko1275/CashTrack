@@ -3,12 +3,15 @@ import {body, param} from 'express-validator'
 import { PresupuestoControllers } from "../controllers/PresupuestoControllers";
 import {GastosController} from "../controllers/GastosController"
 import { HandleInputErrors } from "../middleware/validation";
-import { validatePresupuestoID,validatePresupuestoExist, ValidatePresupuestoInput } from "../middleware/presupuesto";
+import { validatePresupuestoID,validatePresupuestoExist, ValidatePresupuestoInput, tieneAcceso } from "../middleware/presupuesto";
 import {  validateGastosId, ValidateGastosInput, validateGastoExist } from "../middleware/Gastos";
+import { authenticate } from "../middleware/auth";
 const router = Router();
-
+router.use(authenticate)
+router.param('PresupuestoId',tieneAcceso)
 router.param('PresupuestoId',validatePresupuestoID)
 router.param('PresupuestoId',validatePresupuestoExist)
+
 router.param('gastosId',validatePresupuestoExist)
 router.param('gastosId',validateGastoExist)
 router.get('/', PresupuestoControllers.getAll)
@@ -22,5 +25,7 @@ router.post('/:PresupuestoId/Gastos',ValidateGastosInput,HandleInputErrors,Gasto
 router.get('/:PresupuestoId/Gastos/:gastosId',validateGastosId,GastosController.getById)
 router.put('/:PresupuestoId/Gastos/:gastosId',validateGastosId,GastosController.updateById)
 router.delete('/:PresupuestoId/Gastos/:gastosId',validateGastosId,GastosController.deleteById)
+
+
 
 export default router

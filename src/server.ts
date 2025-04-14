@@ -20,7 +20,7 @@ async function connectDB(){
 connectDB()
 const app = express()
 
-app.use(limiter)
+
 
 app.use(morgan('dev'))
 

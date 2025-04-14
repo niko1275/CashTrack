@@ -53,3 +53,13 @@ export const ValidatePresupuestoInput = async (req:Request,res:Response,next:Nex
 
     next()
 }
+
+
+export const tieneAcceso = async (req:Request,res:Response,next:NextFunction)=>{
+    if(req.presupuesto.userId!=req.user.id){
+          res.status(401).json("accion no valida")
+          return  
+    }
+    next()
+
+}

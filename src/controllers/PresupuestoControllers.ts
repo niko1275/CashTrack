@@ -6,6 +6,9 @@ export class PresupuestoControllers {
     static getAll = async (req:Request,res:Response)=>{
         try{
             const presupuesto = await Presupuestos.findAll({
+                where:{
+                    userId:req.user.id
+                },
                 order:[
                     ['id','ASC']
                 ]
@@ -21,11 +24,13 @@ export class PresupuestoControllers {
     static create = async (req: Request, res: Response) => {
         try {
             const nuevoPresupuesto = await Presupuestos.create(req.body); 
+            nuevoPresupuesto.userId = req.user.id
+            await nuevoPresupuesto.save();
             res.status(201).json({ message: "Presupuesto Creado Correctamente", presupuesto: nuevoPresupuesto });
         } catch (error) {
             res.status(500).json({ error: "Hubo un error al crear el presupuesto", details: error });
         }
-    };
+    }    
     static actualizar = async (req:Request,res:Response)=>{
 
             await req.presupuesto.update(req.body)
@@ -39,6 +44,7 @@ export class PresupuestoControllers {
             include:[Gastos]
         })
 
+      
         res.json(presupuesto)
     }
     static eliminar = async (req:Request,res:Response)=>{
